@@ -364,7 +364,8 @@ export class Player {
     if (this.slideCd <= 0) {
       const sp = this.hsp;
       if (sp > 0.01) {
-        const nsp = Math.min(P.slideMaxBoost, Math.max(sp, sp + P.slideBoost));
+        // Cap the boost, not momentum already earned through clean chains.
+        const nsp = Math.max(sp, Math.min(P.slideMaxBoost, sp + P.slideBoost));
         this.vel.x *= nsp / sp; this.vel.z *= nsp / sp;
       }
       this.slideCd = P.slideCooldown;

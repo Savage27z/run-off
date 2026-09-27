@@ -388,6 +388,20 @@ export function setupEnvironment(scene, theme, opts = {}) {
   scene.fog = new THREE.Fog(c(T.fog), T.fogNear, T.fogFar);
   return {
     group, sun, sunDir, hemi, sky, exposure: T.exposure, far, water, theme: T,
+    dispose() {
+      group.removeFromParent();
+      const geometries = new Set(), materials = new Set();
+      group.traverse((o) => {
+        if (o.geometry) geometries.add(o.geometry);
+        if (o.material) {
+          for (const m of (Array.isArray(o.material) ? o.material : [o.material])) materials.add(m);
+        }
+      });
+      for (const g of geometries) g.dispose();
+      for (const m of materials) m.dispose();
+      sun.shadow.dispose();
+      updaters.length = 0;
+    },
     update(t) { for (const u of updaters) u(t); },
     follow(x, y, z) {
       sun.target.position.set(x, y, z);

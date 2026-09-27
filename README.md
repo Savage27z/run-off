@@ -89,6 +89,16 @@ src/
 
 ## Testing courses
 
+Controller/input/resource regression checks (Node.js 24+, no npm install):
+
+```bash
+node --test tests/stability.test.mjs
+```
+
+These cover slide momentum, slide-jump speed, focus loss, gamepad reconnection,
+and scenery/shadow disposal. Browser playtesting is still needed for camera,
+animation, pointer-lock behavior, and frame rate.
+
 After editing a map, open the browser console and run:
 
 ```js
