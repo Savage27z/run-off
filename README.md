@@ -55,12 +55,13 @@ Every course is roughly 40–50 seconds on a clean run.
 4. **Concrete Park** (day): brutalist terraces, a skate bowl, bridge walkways and a footbridge over the river to the far bank.
 5. **Old Town** (haze): a lantern quarter. The tiled roofs are ramps you run up and over; then a clay courtyard, shrine, canal bridge, market and the temple roof.
 6. **Training Yard** (haze): a parkour yard with a vault garden, balance beams over a pit, wall-run lanes, a scaffold stair tower, pillar jumps, a climbing wall, a hurdle deck and two launches into clay courtyards.
+7. **The Depot** (indoor): an indoor parkour gym in an old rail depot, with box stairs, a truss bridge over a foam pit, a wall maze, the mezzanine and block hops up to the tower.
 
 Open `http://localhost:5173/?all` to unlock every course without earning stars.
 
 ## Progression
 
-Each course has **Bronze / Silver / Gold / Ace** times, worth 1–4 ★. Stars unlock courses (Docks 1★, Skeleton 3★, Concrete Park 5★, Old Town 7★, Training Yard 9★) and gear in the Locker: 6 tops, 4 bottoms, 3 shoes, 8 hairstyles, 11 hats, 5 face items, 6 back items (the scarf and cape use cloth physics), 7 speed trails and 17 colours. Your best run is saved as a **ghost** that you race next time.
+Each course has **Bronze / Silver / Gold / Ace** times, worth 1–4 ★. Stars unlock courses (Docks 1★, Skeleton 3★, Concrete Park 5★, Old Town 7★, Training Yard 9★, The Depot 11★) and gear in the Locker: 6 tops, 4 bottoms, 3 shoes, 8 hairstyles, 11 hats, 5 face items, 6 back items (the scarf and cape use cloth physics), 7 speed trails and 17 colours. Your best run is saved as a **ghost** that you race next time.
 
 ## Project layout
 
@@ -74,7 +75,7 @@ src/
   post.js      GTAO + bloom + colour grade
   env.js       clouds, hills, animated sea, gulls
   costumes.js  item + colour catalog and unlock thresholds
-  maps.js      the six courses (+ checkpoints, hints, medal times)
+  maps.js      the seven courses (+ checkpoints, hints, medal times)
   builder.js   level vocabulary: buildings, containers, I-beams, scaffolds, signs, skylines
   world.js     merges all geometry per material; sky shader; themes (dusk/night/day)
   trial.js     timer, splits, medals, ghost record/playback
