@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RUNOFF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/addons/" } }</script>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <canvas id="fx"></canvas>
+  <div id="vignette"></div>
+
+  <div id="ui">
+    <!-- TITLE -->
+    <section id="title" class="screen">
+      <div class="title-block">
+        <div class="logo">RUN<span>OFF</span></div>
+        <div class="tag">rooftop parkour · time trials · no brakes</div>
+        <nav class="menu">
+          <button data-go="maps" class="big">Play</button>
+          <button data-go="locker">Locker</button>
+          <button data-go="settings">Settings</button>
+        </nav>
+        <div class="stars-pill"><span class="star">★</span> <b id="star-count">0</b> stars</div>
+      </div>
+      <div class="controls-card">
+        <div><k>WASD</k> run</div><div><k>Mouse</k> look</div><div><k>Space</k> jump</div>
+        <div><k>Shift</k> slide / roll / dive</div><div><k>E</k> flip</div><div><k>R</k> restart</div><div><k>Q</k> last checkpoint</div>
+      </div>
+    </section>
+
+    <!-- MAPS -->
+    <section id="maps" class="screen hidden">
+      <header class="bar"><button class="back" data-go="title">← Back</button><h2>Choose a course</h2><div class="stars-pill small"><span class="star">★</span> <b class="star-count">0</b></div></header>
+      <div id="map-list" class="map-list"></div>
+    </section>
+
+    <!-- LOCKER -->
+    <section id="locker" class="screen hidden">
+      <header class="bar"><button class="back" data-go="title">← Done</button><h2>Locker</h2><div class="stars-pill small"><span class="star">★</span> <b class="star-count">0</b></div></header>
+      <div class="locker-panel">
+        <div id="locker-tabs" class="tabs"></div>
+        <div id="locker-items" class="items"></div>
+        <div id="locker-colors" class="colors"></div>
+        <div class="locker-actions"><button id="randomize">🎲 Randomize</button></div>
+      </div>
+      <div class="drag-hint">drag to spin</div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="screen hidden">
+      <header class="bar"><button class="back" data-go="title">← Back</button><h2>Settings</h2></header>
+      <div class="panel settings-panel">
+        <label>Mouse sensitivity <input type="range" id="set-sens" min="0.2" max="3" step="0.05"><output id="out-sens"></output></label>
+        <label>Field of view <input type="range" id="set-fov" min="60" max="95" step="1"><output id="out-fov"></output></label>
+        <label>Volume <input type="range" id="set-volume" min="0" max="1" step="0.05"><output id="out-volume"></output></label>
+        <label class="check"><input type="checkbox" id="set-invert"> Invert Y</label>
+        <label class="check"><input type="checkbox" id="set-ghost"> Race your best ghost</label>
+        <label>Graphics
+          <select id="set-quality"><option value="high">High</option><option value="low">Low (faster)</option></select>
+        </label>
+        <button id="reset-progress" class="danger">Reset progress</button>
+      </div>
+    </section>
+
+    <!-- HUD -->
+    <section id="hud" class="hidden">
+      <div class="hud-top">
+        <div id="time" class="mono">0.000</div>
+        <div id="split" class="mono"></div>
+      </div>
+      <div class="hud-right">
+        <div id="cps" class="mono">0/0</div>
+        <div id="target"></div>
+        <div id="pb" class="mono"></div>
+      </div>
+      <div class="hud-left">
+        <div class="speed"><span id="speed" class="mono">0.0</span><small>m/s</small></div>
+        <div class="speed-bar"><i id="speed-fill"></i></div>
+      </div>
+      <div id="style-hud">
+        <div id="combo"><b id="combo-pts"></b><span id="combo-mult"></span><i id="combo-bar"></i></div>
+        <div id="style-total"></div>
+      </div>
+      <div id="feed"></div>
+      <div id="hint"></div>
+      <div id="prompt"></div>
+    </section>
+
+    <!-- PAUSE -->
+    <section id="pause" class="screen dim hidden">
+      <div class="panel center">
+        <h2>Paused</h2>
+        <button id="resume" class="big">Resume</button>
+        <button id="restart">Restart <k>R</k></button>
+        <button id="quit">Quit to menu</button>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results" class="screen dim hidden">
+      <div class="panel center results">
+        <div id="res-map" class="res-map"></div>
+        <div id="res-medal" class="res-medal"></div>
+        <div id="res-time" class="res-time mono"></div>
+        <div id="res-sub" class="res-sub"></div>
+        <div id="res-style" class="res-style"></div>
+        <div id="res-ladder" class="ladder"></div>
+        <div id="res-unlocks" class="unlocks"></div>
+        <div class="row">
+          <button id="res-retry" class="big">Retry <k>R</k></button>
+          <button id="res-next">Next course</button>
+          <button id="res-menu">Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast"></div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
