@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { clamp, damp, lerp, smooth } from './util.js';
 import { colorDef, ITEMS } from './costumes.js';
 import { buildCharacter, PIVOT } from './char/build.js';
+import { RunnerMotion } from './char/motion.js';
 
 const TAU = Math.PI * 2;
 const V = new THREE.Vector3(), V2 = new THREE.Vector3();
@@ -139,6 +140,7 @@ export class Runner {
     this.time = 0;
     this.cur = { ...REST };
     this.tgt = { ...REST };
+    this.motion = new RunnerMotion();
     this.costume = null;
     this.face = { blink: 0, blinkT: 2, look: new THREE.Vector2(), lookT: 0, lookGoal: new THREE.Vector2(), mouth: new THREE.Vector4(0.6, 0.11, 0, 0), brow: new THREE.Vector2() };
     this.pony = { a: 0, v: 0, b: 0, w: 0 };
@@ -514,6 +516,18 @@ export class Runner {
       if (this.phase > 1000) this.phase -= 1000;
     }
     this.pose(a);
+    this.motion.update(dt, a);
+    if (st === 'ground') {
+      const m = this.motion, T = this.tgt;
+      T.spinZ += m.bank;
+      T.bodyX += m.lean;
+      T.neckX -= m.lean * 0.5;
+      // Absorb the landing through hips and knees, then settle back into the stride.
+      T.bodyY -= m.landing * 0.08;
+      T.hipLX -= m.landing * 0.16; T.hipRX -= m.landing * 0.16;
+      T.knLX += m.landing * 0.32; T.knRX += m.landing * 0.32;
+      T.spineX += m.landing * 0.12;
+    }
     const direct = st === 'roll' || st === 'flip';
     const fast = st === 'roll' || st === 'climb' || st === 'vault' || st === 'flip' || st === 'crash';
     const rate = fast ? 26 : st === 'air' || st === 'dive' ? 11 : 16;
@@ -586,6 +600,7 @@ export class Runner {
   }
 
   resetExtras() {
+    this.motion.reset();
     if (this.scarf) this.scarf.ready = false;
     if (this.cape) this.cape.ready = false;
     if (this.trail) this.trail.reset();

@@ -56,6 +56,7 @@ Every course is roughly 40–50 seconds on a clean run.
 5. **Old Town** (haze): a lantern quarter. The tiled roofs are ramps you run up and over; then a clay courtyard, shrine, canal bridge, market and the temple roof.
 6. **Training Yard** (haze): a parkour yard with a vault garden, balance beams over a pit, wall-run lanes, a scaffold stair tower, pillar jumps, a climbing wall, a hurdle deck and two launches into clay courtyards.
 7. **The Depot** (indoor): an indoor parkour gym in an old rail depot, with box stairs, a truss bridge over a foam pit, a wall maze, the mezzanine and block hops up to the tower.
+8. **Hillside Estate** (day): a residential climb through courtyard steps, a split balcony/garden route, a roof garden and a shared city overlook.
 
 Open `http://localhost:5173/?all` to unlock every course without earning stars.
 

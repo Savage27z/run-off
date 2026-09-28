@@ -12,6 +12,8 @@ registerHooks({ resolve(specifier, context, next) {
 } });
 const THREE = await import('../vendor/three.module.js');
 const { setupEnvironment } = await import('../src/world.js');
+const { RunnerMotion } = await import('../src/char/motion.js');
+const { mapById } = await import('../src/maps.js');
 
 test('slides boost normal running without cutting earned momentum', () => {
   for (const [speed, expected] of [[8.5, 11.1], [14, 15], [18, 18]]) {
@@ -95,6 +97,29 @@ test('unloading scenery disposes shared geometry/materials and shadow targets', 
   assert.equal(scene.children.length, 0);
   for (const count of resources.values()) assert.equal(count, 1);
   assert.equal(shadows, 2);
+});
+
+test('runner secondary motion responds to turns, acceleration, and hard landings', () => {
+  const motion = new RunnerMotion();
+  const ground = (speed, facing, vy = 0) => ({ state: 'ground', speed, facing, vy });
+  motion.update(1 / 60, ground(8.5, 0));
+  motion.update(1 / 60, ground(10, 0.35));
+  assert.ok(motion.bank < 0, 'turning right banks the runner right');
+  assert.ok(motion.lean > 0, 'accelerating leans the runner forward');
+  motion.update(1 / 60, { state: 'air', speed: 9, facing: 0.35, vy: -14 });
+  motion.update(1 / 60, ground(9, 0.35));
+  assert.ok(motion.landing > 0, 'landing compresses the runner');
+  for (let i = 0; i < 60; i++) motion.update(1 / 60, ground(0, 0.35));
+  assert.ok(Math.abs(motion.bank) < 0.001);
+  assert.ok(motion.landing < 0.001);
+});
+
+test('Hillside Estate is available immediately and keeps both tested routes', () => {
+  const map = mapById('hillside');
+  assert.equal(map.name, 'Hillside Estate');
+  assert.equal(map.unlock, 0);
+  assert.equal(map.checkpoints.length, 6);
+  assert.equal(map.medals.length, 4);
 });
 
 // Minimal browser event surface for input tests; no renderer is mocked.
