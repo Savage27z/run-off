@@ -70,6 +70,10 @@ class Game {
       if (this.mode === 'play' && !this.input.locked) this.input.lock(this.canvas);
     });
     this.input.onUnlock = () => { if (this.mode === 'play') this.pause(); };
+    this.input.onBlur = () => this.pause();
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) this.pause();
+    });
     this.input.onAnyKey = () => this.sfx.init();
 
     let drag = null;
@@ -130,7 +134,7 @@ class Game {
     if (this.trial) this.trial.dispose();
     if (this.world.mats) for (const d of Object.values(this.world.mats)) d.mat.dispose();
     this.world.clear();
-    if (this.env) this.scene.remove(this.env.group);
+    if (this.env) this.env.dispose();
     this.map = map;
     this.world.setTheme(map.theme);
     map.build(new Builder(this.world, hashStr(map.id)));
@@ -189,6 +193,9 @@ class Game {
   pause() {
     if (this.mode !== 'play') return;
     this.mode = 'paused';
+    this.input.reset();
+    this.input.unlock();
+    this.acc = 0;
     this.ui.show('pause');
     this.sfx.silence();
   }
@@ -290,12 +297,11 @@ class Game {
     this.time += dt;
     this.input.poll();
     const S = Save.data.settings;
-    const mode = this.mode;
-
     if (this.input.take('pause')) {
-      if (mode === 'play') this.pause();
-      else if (mode === 'paused') this.resume();
+      if (this.mode === 'play') this.pause();
+      else if (this.mode === 'paused') this.resume();
     }
+    const mode = this.mode;
     if (mode === 'play' || mode === 'results') {
       if (this.input.take('restart')) { this.restart(); }
       if (mode === 'play' && this.input.take('respawn') && this.trial.started) this.trial.respawn();

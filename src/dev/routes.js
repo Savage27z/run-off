@@ -216,6 +216,33 @@ ROUTES.depot = {
   ],
 };
 
+const hillsideFinish = [
+  { x: 0, z: 145 },
+  { x: 0, z: 174 },
+  { x: 0, z: 205, slideAt: (p) => p.z > 177 && p.z < 178, slideHeld: (p) => p.z < 186, jumpAt: (p) => p.z > 186.8 && p.z < 187.5 },
+  { x: 0, z: 240, jumpAt: (p) => p.z > 216.5 && p.z < 217.2, roll: true },
+  { x: 0, z: 305 },
+];
+ROUTES.hillside = {
+  balcony: [
+    { x: 0, z: 51 },
+    { x: 8, z: 57 },
+    { x: 8, z: 84 },
+    { x: 8, z: 132, jumpAt: (p) => p.z > 86.5 && p.z < 87.2 },
+    ...hillsideFinish,
+  ],
+  garden: [
+    { x: 0, z: 51 },
+    { x: -6, z: 57 },
+    { x: -6, z: 91, r: 0.6 },
+    { x: -1.9, z: 94, r: 0.5 },
+    { x: -1.9, z: 105, r: 0.5 },
+    { x: -6, z: 110, r: 0.6 },
+    { x: -6, z: 132 },
+    ...hillsideFinish,
+  ],
+};
+
 export function runRoute(game, mapId, wps, secs = 90) {
   const P = game.player;
   game.loadMap(mapId);

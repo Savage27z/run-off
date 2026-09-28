@@ -56,6 +56,7 @@ Every course is roughly 40–50 seconds on a clean run.
 5. **Old Town** (haze): a lantern quarter. The tiled roofs are ramps you run up and over; then a clay courtyard, shrine, canal bridge, market and the temple roof.
 6. **Training Yard** (haze): a parkour yard with a vault garden, balance beams over a pit, wall-run lanes, a scaffold stair tower, pillar jumps, a climbing wall, a hurdle deck and two launches into clay courtyards.
 7. **The Depot** (indoor): an indoor parkour gym in an old rail depot, with box stairs, a truss bridge over a foam pit, a wall maze, the mezzanine and block hops up to the tower.
+8. **Hillside Estate** (day): a residential climb through courtyard steps, a split balcony/garden route, a roof garden and a shared city overlook.
 
 Open `http://localhost:5173/?all` to unlock every course without earning stars.
 
@@ -88,6 +89,16 @@ src/
 ```
 
 ## Testing courses
+
+Controller/input/resource regression checks (Node.js 24+, no npm install):
+
+```bash
+node --test tests/stability.test.mjs
+```
+
+These cover slide momentum, slide-jump speed, focus loss, gamepad reconnection,
+and scenery/shadow disposal. Browser playtesting is still needed for camera,
+animation, pointer-lock behavior, and frame rate.
 
 After editing a map, open the browser console and run:
 

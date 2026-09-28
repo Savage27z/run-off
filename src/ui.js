@@ -11,6 +11,9 @@ const THEME_ART = {
   night: 'linear-gradient(160deg, #03050d 0%, #13204a 60%, #ff2e88 140%)',
   day: 'linear-gradient(160deg, #2f6fd0 0%, #9cc8f0 70%, #f5c518 140%)',
   park: 'linear-gradient(160deg, #62a8f0 0%, #cfe8fb 55%, #b9b7b1 100%)',
+  haze: 'linear-gradient(160deg, #8b7665 0%, #dcb4a4 55%, #e8d7b3 100%)',
+  hall: 'linear-gradient(160deg, #242a30 0%, #7a7770 55%, #c0544a 100%)',
+  hillside: 'linear-gradient(160deg, #709581 0%, #d9c8a8 55%, #c18c59 100%)',
 };
 
 const TABS = [

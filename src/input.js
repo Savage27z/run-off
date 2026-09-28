@@ -34,7 +34,10 @@ export class Input {
       if (this.onAnyKey) this.onAnyKey(e);
     });
     addEventListener('keyup', (e) => this.down.delete(e.code));
-    addEventListener('blur', () => this.down.clear());
+    addEventListener('blur', () => {
+      this.reset();
+      if (this.onBlur) this.onBlur();
+    });
     // drag-to-look fallback for when pointer lock is unavailable
     addEventListener('mousedown', (e) => {
       if (this.locked && e.button === 0) { this.pressed.set('trick', (this.pressed.get('trick') || 0) + 1); this.mouseTrick = true; return; }
@@ -73,6 +76,13 @@ export class Input {
   }
   clearPressed() { this.pressed.clear(); }
 
+  reset() {
+    this.down.clear();
+    this.clearPressed();
+    this.dx = this.dy = 0;
+    this.dragging = this.mouseTrick = false;
+  }
+
   padDown(a) {
     const p = this.pad;
     if (!p || !PAD[a]) return false;
@@ -84,7 +94,7 @@ export class Input {
     this.pad = null;
     for (const p of pads) if (p && p.connected) { this.pad = p; break; }
     this.padMove.x = this.padMove.y = this.padLook.x = this.padLook.y = 0;
-    if (!this.pad) return;
+    if (!this.pad) { this.padPrev = []; return; }
     const dz = (v) => (Math.abs(v) < 0.15 ? 0 : v);
     const ax = this.pad.axes;
     this.padMove.x = dz(ax[0] || 0); this.padMove.y = dz(ax[1] || 0);

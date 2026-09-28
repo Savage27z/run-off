@@ -1,6 +1,7 @@
 // Map definitions. Courses run toward +z. Checkpoints are listed in order; the last one is the finish.
 import * as THREE from 'three';
 import { CONT } from './builder.js';
+import { hillside } from './maps/hillside.js';
 
 // z-facing gate across x0..x1 at z, floor y
 const gate = (x0, x1, y, z, { h = 4.5, yaw = 0, y0 = y, spawnX = (x0 + x1) / 2, vis = [x0, x1] } = {}) => ({
@@ -975,5 +976,7 @@ export const MAPS = [
     },
   },
 ];
+
+MAPS.push(hillside(gate, hint));
 
 export const mapById = (id) => MAPS.find((m) => m.id === id) || MAPS[0];
